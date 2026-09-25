@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundación Cultural Parada Literaria · Rancagua</title>
+  <link rel="icon" type="image/png" href="img/Logo_Fundaci_n_Cultural_Parada_Literaria.png">
+  
+  <!-- Google Fonts: DM Sans, Libre Caslon Display y Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Libre Caslon Display"', 'serif'],
+            editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"DM Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos de diseño e identidad visual */
+    :root {
+      font-family: 'DM Sans', sans-serif;
+      background: #f4ecd9;
+      color: #202820;
+      font-synthesis: none;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #f4ecd9; color: #202820; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .font-display { font-family: 'Libre Caslon Display', serif; }
+
+    .mini-mark { width: 54px; height: 54px; overflow: hidden; }
+    .mini-mark img { width: 76px; max-width: none; transform: translate(-11px,-11px); }
+    nav a { transition: opacity .2s; }
+    nav a:hover { opacity: .55; }
+    .nav-contact { border-bottom: 2px solid #bc5437; padding-bottom: 5px; }
+    .menu-button { width: 36px; height: 36px; position: relative; }
+    .menu-button span { position: absolute; left: 6px; width: 24px; height: 1px; background: currentColor; }
+    .menu-button span:first-child { top: 13px; }
+    .menu-button span:last-child { top: 21px; }
+    .mobile-nav { display: flex; flex-direction: column; padding: 10px 20px 25px; font: 600 14px/2.8 'DM Sans'; text-transform: uppercase; letter-spacing: .1em; background: rgba(244, 236, 217, 0.98); }
+
+    .hero { 
+      background-image: linear-gradient(rgba(32,40,32,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(32,40,32,.055) 1px, transparent 1px); 
+      background-size: 38px 38px; 
+    }
+    .eyebrow, .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .2em; }
+    
+    /* Pincelada orgánica tipo acuarela de la demo (foto 1 y 2) */
+    .highlight-brush {
+      position: relative;
+      display: inline-block;
+      z-index: 1;
+    }
+    .highlight-brush::after {
+      content: '';
+      position: absolute;
+      left: -8px;
+      right: -8px;
+      bottom: 4px;
+      height: 44%;
+      background: #FEE440;
+      opacity: 0.78;
+      z-index: -1;
+      transform: rotate(-1deg) skewX(-4deg);
+      border-radius: 2px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Rotación circular suave del texto orbital */
+    @keyframes spinOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .orbit-ring {
+      animation: spinOrbit 24s linear infinite;
+    }
+    .orbit-ring:hover {
+      animation-play-state: paused;
+    }
+
+    /* Transiciones de fase de la animación */
+    .hero-intro-seq {
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      min-height: 440px;
+    }
+    .hero-final-seal {
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .word-card {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .btn-replay-anim {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-replay-anim:hover {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+
+    .side-note { position:absolute; top:50%; font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; writing-mode:vertical-rl; }
+    .side-note.left-5 { transform:rotate(180deg); }
+    .scroll-cue { position:absolute; left:50%; bottom:25px; display:flex; align-items:center; gap:12px; transform:translateX(-50%); font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; }
+    .scroll-cue i { width:40px; height:1px; background:currentColor; }
+
+    .statement { font-family:'Libre Caslon Display',serif; font-size:clamp(44px,6vw,78px); line-height:1.02; letter-spacing:-.025em; }
+    .statement em { color:#bc5437; font-weight:400; font-style:normal; }
+    .pillar-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+    .pillar-card { 
+      position: relative; 
+      min-height: 520px; 
+      padding: 32px 28px; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between; 
+      border-right: 1px solid rgba(0,0,0,.3); 
+      overflow: hidden; 
+      transition: transform .35s cubic-bezier(.2,.8,.2,1); 
+    }
+    .pillar-card:first-child { transform:rotate(-1deg); }
+    .pillar-card:nth-child(2) { transform:translateY(18px); }
+    .pillar-card:nth-child(3) { transform:rotate(1deg); }
+    .pillar-card:hover { transform:translateY(-9px); }
+    
+    /* Capa de imagen de fondo translúcida con tono monocromático/duotono */
+    .pillar-bg-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      mix-blend-mode: multiply;
+      filter: grayscale(100%) contrast(1.18);
+      opacity: 0.65;
+      pointer-events: none;
+      transition: transform 0.6s cubic-bezier(.2,.8,.2,1), opacity 0.4s;
+    }
+    .pillar-card:hover .pillar-bg-img {
+      transform: scale(1.05);
+      opacity: 0.75;
+    }
+    .pillar-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    /* Tinte del color de la tarjeta con balance perfecto para ver la foto y leer el texto */
+    .pillar-card.pillar-acceso .pillar-overlay {
+      background: linear-gradient(180deg, rgba(230,185,40,0.35) 0%, rgba(230,185,40,0.55) 50%, rgba(230,185,40,0.75) 100%);
+    }
+    .pillar-card.pillar-mediacion .pillar-overlay {
+      background: linear-gradient(180deg, rgba(188,84,55,0.35) 0%, rgba(188,84,55,0.55) 50%, rgba(188,84,55,0.75) 100%);
+    }
+    .pillar-card.pillar-formacion .pillar-overlay {
+      background: linear-gradient(180deg, rgba(36,56,47,0.3) 0%, rgba(36,56,47,0.5) 50%, rgba(36,56,47,0.72) 100%);
+    }
+
+    .pillar-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    .round-arrow { width:48px; height:48px; display:grid; place-items:center; border:1px solid currentColor; border-radius:50%; }
+    .round-arrow svg { width:20px; }
+    .pillar-card h3 { font:clamp(55px,6vw,88px)/.9 'Libre Caslon Display',serif; text-transform:lowercase; }
+    
+    /* Contraste y legibilidad de textos en cada tarjeta */
+    .pillar-card.pillar-acceso {
+      background-color: #e6b928;
+      color: #1a1608;
+    }
+    .pillar-card.pillar-acceso .pillar-details {
+      color: #26200a;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+    .pillar-card.pillar-acceso .access-impact strong {
+      color: #120f05;
+      font-weight: 700;
+    }
+
+    .pillar-card.pillar-mediacion {
+      background-color: #bc5437;
+      color: #fff9f2;
+    }
+    .pillar-card.pillar-mediacion .pillar-details {
+      color: #fff1e5;
+      opacity: 0.95;
+      font-weight: 400;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    }
+    .pillar-card.pillar-mediacion h3 {
+      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .pillar-card.pillar-formacion {
+      background-color: #24382f;
+      color: #fff8e9;
+    }
+    .pillar-card.pillar-formacion .pillar-details {
+      color: #f0f7f3;
+      opacity: 0.95;
+      font-weight: 400;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .pillar-card.pillar-formacion h3 {
+      text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    }
+
+    .pillar-details { max-width:320px; margin-top:22px; font-size:14.5px; line-height:1.6; }
+    .access-impact { display:grid; grid-template-columns:repeat(3,1fr); margin-top:22px; padding-top:18px; border-top:1px solid currentColor; opacity: 0.95; }
+    .access-impact div { display:flex; flex-direction:column; padding-right:8px; }
+    .access-impact strong { font:26px/1 'Libre Caslon Display',serif; }
+    .access-impact span { margin-top:5px; font-size:8.5px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; }
+    .access-impact p { grid-column:1/-1; margin-top:16px; font-size:9px; line-height:1.45; text-transform:uppercase; letter-spacing:.08em; opacity:.85; }
+
+    .team-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:28px; align-items:start; }
+    .team-card:nth-child(1) { grid-column:1/5; }
+    .team-card:nth-child(2) { grid-column:5/9; margin-top:80px; }
+    .team-card:nth-child(3) { grid-column:9/13; margin-top:20px; }
+    .photo-frame { position:relative; aspect-ratio:4/5; overflow:hidden; background:#d7cdb6; }
+    .photo-frame:after { content:""; position:absolute; inset:0; background:#bc5437; mix-blend-mode:color; opacity:.12; }
+    .photo-frame img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .team-card:hover img { transform:scale(1.02); }
+    .photo-credit { font-size:9px; text-transform:uppercase; letter-spacing:.14em; opacity:.5; }
+
+    .contact-section { position:relative; }
+    .contact-section:after { content:""; position:absolute; right:-4%; top:10%; width:26%; height:32px; background:#f4ecd9; opacity:.55; transform:rotate(7deg); clip-path:polygon(2% 20%,100% 0,96% 100%,0 74%); }
+    .contact-links { border-top:1px solid rgba(0,0,0,.45); }
+    .contact-links a { display:grid; grid-template-columns:1fr 1fr 28px; align-items:center; gap:15px; min-height:90px; border-bottom:1px solid rgba(0,0,0,.45); transition:padding .25s; }
+    .contact-links a:hover { padding-left:12px; }
+    .contact-links span { font-family:'Libre Caslon Display',serif; font-size:30px; }
+    .contact-links small { font-size:11px; text-transform:uppercase; letter-spacing:.12em; }
+    .contact-links svg { width:24px; }
+
+    /* Modal de detalle interactivo para los pilares */
+    .detail-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: #f4ecd9;
+      overflow-y: auto;
+    }
+    .detail-overlay.active {
+      display: block;
+    }
+
+    .detail-hero { min-height:600px; padding:120px 40px 65px; display:flex; align-items:stretch; }
+    .detail-hero-inner { width:100%; max-width:1280px; margin:auto; display:flex; flex-direction:column; justify-content:space-between; }
+    .back-btn { background: none; border: none; cursor: pointer; color: inherit; width:max-content; padding-bottom:5px; border-bottom:1px solid currentColor; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; }
+    .detail-title-row { display:grid; grid-template-columns:1fr 3fr; align-items:end; border-bottom:1px solid currentColor; padding-bottom:30px; margin-top: 40px; }
+    .detail-title-row > span { padding-bottom:10px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.18em; }
+    .detail-title-row h1 { font:clamp(80px,14vw,200px)/.75 'Libre Caslon Display',serif; letter-spacing:-.065em; }
+    .detail-intro { display:grid; grid-template-columns:1fr 3fr; padding-top:30px; }
+    .detail-intro > p:last-child { max-width:850px; font:clamp(24px,3.5vw,46px)/1.1 'Libre Caslon Display',serif; }
+    .detail-body { max-width:1280px; margin:auto; padding:100px 40px; display:grid; grid-template-columns:1.05fr .95fr; gap:8vw; align-items:start; }
+    .detail-photo { position:relative; }
+    .detail-photo:before { content:""; position:absolute; z-index:-1; inset:-18px 30px 20px -18px; background:#e6b928; transform:rotate(-2deg); }
+    .detail-photo img { width:100%; aspect-ratio:4/5; object-fit:cover; filter:saturate(.85); }
+    .detail-photo > span { display:block; margin-top:15px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; opacity:.55; }
+    .detail-programs > .section-label { margin-bottom:30px; }
+    .detail-programs article { display:grid; grid-template-columns:45px 1fr; gap:18px; padding:24px 0; border-top:1px solid rgba(32,40,32,.35); }
+    .detail-programs article > span { padding-top:8px; font-size:10px; font-weight:700; letter-spacing:.15em; }
+    .detail-programs h2 { font:clamp(30px,3.5vw,50px)/1 'Libre Caslon Display',serif; }
+    .detail-programs article p { max-width:430px; margin-top:12px; font-size:14px; line-height:1.65; }
+    .detail-stats { padding:90px max(40px,calc((100vw - 1280px)/2)); background:#24382f; color:#fff8e9; }
+    .detail-stats > div { display:grid; grid-template-columns:repeat(3,1fr); margin-top:30px; border-top:1px solid rgba(255,255,255,.3); }
+    .detail-stats article { min-height:200px; padding:30px 20px 25px 0; display:flex; flex-direction:column; justify-content:flex-end; border-right:1px solid rgba(255,255,255,.3); }
+    .detail-stats article:not(:first-child) { padding-left:30px; }
+    .detail-stats strong { font:clamp(60px,8vw,110px)/.8 'Libre Caslon Display',serif; color:#e6b928; letter-spacing:-.05em; }
+    .detail-stats span { margin-top:18px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.15em; }
+    .detail-stats > p:last-child { margin-top:25px; font-size:10px; text-transform:uppercase; letter-spacing:.12em; opacity:.65; }
+
+    @media (max-width: 767px) {
+      .side-note { display:none; }
+      .hero { min-height:760px; }
+      .hero:before { top:27%; width:70%; left:15%; }
+      .orbit-wrap { width:86vw; }
+      .orbit span { transform: rotate(var(--angle)) translateX(calc(43vw - 3px)) rotate(calc(var(--angle) * -1)); font-size:8px; padding:4px; }
+      .hero-quote { margin-top:35px; }
+      .pillar-grid { grid-template-columns:1fr; gap:12px; }
+      .pillar-card { min-height:390px; }
+      .pillar-card:nth-child(n) { transform:none; }
+      .team-grid { display:block; }
+      .team-card:nth-child(n) { margin:0 0 55px; }
+      .team-card:nth-child(2) { margin-left:12%; }
+      .team-card:nth-child(3) { margin-right:12%; }
+      .contact-links a { grid-template-columns:1fr 28px; }
+      .contact-links small { grid-row:2; margin-top:-25px; padding-bottom:12px; }
+      .contact-links svg { grid-column:2; grid-row:1/3; }
+      .detail-hero { min-height:550px; padding:100px 20px 50px; }
+      .detail-title-row { grid-template-columns:1fr; gap:15px; }
+      .detail-title-row h1 { font-size:clamp(65px,24vw,110px); }
+      .detail-intro { grid-template-columns:1fr; gap:18px; }
+      .detail-body { padding:60px 20px; grid-template-columns:1fr; gap:60px; }
+      .detail-stats { padding:60px 20px; }
+      .detail-stats > div { grid-template-columns:1fr; }
+      .detail-stats article { min-height:130px; padding:20px 0; border-right:0; border-bottom:1px solid rgba(255,255,255,.3); }
+      .detail-stats article:not(:first-child) { padding-left:0; }
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-[#f4ecd9] text-[#202820]">
+
+  <!-- HEADER OFICIAL FIGMA -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-black/15 bg-[#f4ecd9]/90 text-[#202820] backdrop-blur-md">
+    <div class="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-5 md:px-10">
+      <a href="#inicio" class="flex items-center gap-3" aria-label="Fundación Cultural Parada Literaria, inicio">
+        <div class="mini-mark"><img src="img/Logo_Fundaci_n_Cultural_Parada_Literaria.png" alt="" /></div>
+        <div class="leading-none">
+          <span class="block font-display text-xl">Parada Literaria</span>
+          <span class="text-[9px] font-bold uppercase tracking-[.25em]">Fundación Cultural · Rancagua</span>
+        </div>
+      </a>
+      <nav class="hidden items-center gap-8 text-xs font-bold uppercase tracking-[.14em] md:flex" aria-label="Navegación principal">
+        <a href="#somos">Quiénes somos</a>
+        <a href="#pilares">Qué hacemos</a>
+        <a href="#equipo">Equipo</a>
+        <a href="#contacto" class="nav-contact">Participa</a>
+      </nav>
+      <button class="menu-button md:hidden" id="menuBtn" aria-label="Abrir menú">
+        <span />
+        <span />
+      </button>
+    </div>
+    <nav class="mobile-nav hidden" id="mobileMenu">
+      <a href="#somos" class="mobile-link">Quiénes somos</a>
+      <a href="#pilares" class="mobile-link">Qué hacemos</a>
+      <a href="#equipo" class="mobile-link">Equipo</a>
+      <a href="#contacto" class="mobile-link">Participa</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO FIGMA CON ANIMACIÓN EDITORIAL DE LA DEMO (FONDO CUADRICULADO) -->
+    <section id="inicio" class="hero relative flex min-h-[820px] items-center justify-center px-5 pb-16 pt-24">
+      <span class="side-note left-5">Región de O’Higgins · Chile</span>
+      <span class="side-note right-5">Libros para encontrarnos · 2023</span>
+
+      <!-- FASE 1: SECUENCIA DE PALABRAS (COMO LA FOTO 1) -->
+      <div id="heroIntroSeq" class="hero-intro-seq relative flex w-full max-w-[800px] flex-col items-center justify-center text-center">
+        <div id="wordCard" class="word-card flex min-h-[160px] flex-col items-center justify-center px-4">
+          <!-- Inyectado dinámicamente -->
+        </div>
+
+        <!-- Indicador de puntos discretos de la demo -->
+        <div class="mt-8 flex flex-col items-center gap-4">
+          <div class="flex items-center gap-2" id="seqDots">
+            <span class="seq-dot h-2.5 w-2.5 rounded-full bg-[#bc5437] transition-all"></span>
+            <span class="seq-dot h-2 w-2 rounded-full bg-[#202820]/25 transition-all"></span>
+            <span class="seq-dot h-2 w-2 rounded-full bg-[#202820]/25 transition-all"></span>
+            <span class="seq-dot h-2 w-2 rounded-full bg-[#202820]/25 transition-all"></span>
+            <span class="seq-dot h-2 w-2 rounded-full bg-[#202820]/25 transition-all"></span>
+          </div>
+          <button id="btnSkipHero" type="button" class="mt-2 text-[11px] font-bold uppercase tracking-[.18em] text-[#202820]/60 transition-colors hover:text-[#bc5437]">
+            Saltar intro →
+          </button>
+        </div>
+      </div>
+
+      <!-- FASE 2: SELLO ORBITAL CIRCULAR SVG CON EL LOGO (COMO LA FOTO 2) -->
+      <div id="heroFinalSeal" class="hero-final-seal relative hidden w-full max-w-[900px] flex-col items-center text-center opacity-0 scale-95">
+        
+        <!-- Contenedor del sello giratorio circular SVG -->
+        <div class="relative flex h-80 w-80 md:h-96 md:w-96 items-center justify-center">
+          
+          <!-- Anillo SVG orbital con el texto curvado continuo -->
+          <svg class="orbit-ring pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 300 300">
+            <defs>
+              <path id="orbitTextCircle" d="M 150, 150 m -115, 0 a 115,115 0 1,1 230,0 a 115,115 0 1,1 -230,0" fill="none" />
+            </defs>
+            <text class="fill-[#202820]/80 text-[11px] font-bold uppercase tracking-[0.24em]" style="letter-spacing: 0.22em;">
+              <textPath href="#orbitTextCircle" startOffset="0%">
+                LECTURA • INFANCIA • COMUNIDAD • PATRIMONIO • MEDIACIÓN •
+              </textPath>
+            </text>
+          </svg>
+
+          <!-- Halo central suave con el logo oficial dentro -->
+          <div class="relative flex h-60 w-60 md:h-72 md:w-72 items-center justify-center">
+            <h1 class="sr-only">Fundación Cultural Parada Literaria</h1>
+            <img class="max-h-[220px] max-w-[220px] md:max-h-[260px] md:max-w-[260px] object-contain drop-shadow-sm" 
+                 src="img/Logo_Fundaci_n_Cultural_Parada_Literaria.png" 
+                 alt="Fundación Cultural Parada Literaria" />
+          </div>
+        </div>
+
+        <!-- Cita de Gabriela Mistral con pincelada orgánica (idéntica a la foto 2) -->
+        <div class="mt-8 max-w-xl text-center px-4">
+          <p class="font-editorial text-xl md:text-2xl italic leading-relaxed text-[#202820]">
+            “Hacer leer como se come todos los días, hasta que la lectura sea como el mirar un ejercicio natural, <span class="highlight-brush font-semibold text-[#202820]">pero gozoso siempre</span>.”
+          </p>
+          <span class="mt-3 block text-xs font-bold uppercase tracking-widest text-[#bc5437]">
+            — Gabriela Mistral
+          </span>
+        </div>
+
+        <button id="btnReplayHero" type="button" class="btn-replay-anim mt-8 flex items-center gap-2 text-[#202820]">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          Ver animación de nuevo
+        </button>
+      </div>
+
+      <a class="scroll-cue" href="#somos" aria-label="Continuar a Quiénes somos">
+        <span>Descubrir</span><i />
+      </a>
+    </section>
+
+    <!-- 01 / QUIÉNES SOMOS -->
+    <section id="somos" class="border-y border-black/20 px-5 py-24 md:px-10 md:py-36">
+      <div class="mx-auto grid max-w-[1280px] gap-16 md:grid-cols-12">
+        <div class="md:col-span-3">
+          <p class="section-label">01 / Quiénes somos</p>
+        </div>
+        <div class="md:col-span-8 md:col-start-5">
+          <h2 class="statement">Los libros no cambian el mundo solos. <em>Las personas que se encuentran en ellos, sí.</em></h2>
+          <div class="mt-14 grid gap-8 border-t border-black/30 pt-8 text-lg leading-relaxed md:grid-cols-2">
+            <p>Nacimos en Rancagua en 2023 para poner libros justo donde la gente vive, espera y se encuentra.</p>
+            <p>Creemos en la cultura comunitaria como una herramienta concreta de afecto, memoria y salud emocional.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / NUESTRO TRABAJO (TRES FORMAS DE ABRIR UN LIBRO) -->
+    <section id="pilares" class="py-24 md:py-36">
+      <div class="mx-auto max-w-[1440px] px-5 md:px-10">
+        <div class="mb-14 flex items-end justify-between">
+          <div>
+            <p class="section-label">02 / Nuestro trabajo</p>
+            <h2 class="mt-5 font-display text-5xl md:text-7xl">Tres formas de abrir un libro</h2>
+          </div>
+          <p class="hidden max-w-[260px] text-sm leading-relaxed md:block">Del acceso a la conversación. De la conversación al aprendizaje colectivo.</p>
+        </div>
+        <div class="pillar-grid">
+          <!-- 01 ACCESO -->
+          <button type="button" onclick="openDetail('acceso')" class="pillar-card pillar-acceso text-left cursor-pointer group">
+            <!-- Imagen de fondo temática (comunidad / libros / estanterías) -->
+            <div class="pillar-bg-img" style="background-image: url('https://images.unsplash.com/photo-1698795635774-b077032941f0?auto=format&fit=crop&w=1200&q=80');"></div>
+            <!-- Capa de color y contraste -->
+            <div class="pillar-overlay"></div>
+            
+            <div class="pillar-content">
+              <div class="flex items-start justify-between">
+                <span class="text-xs font-bold tracking-[.2em]">01</span>
+                <span class="round-arrow transition-transform group-hover:scale-105">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+                </span>
+              </div>
+              <div>
+                <p class="mb-3 text-xs font-bold uppercase tracking-[.2em]">Libros donde la vida sucede.</p>
+                <h3>acceso</h3>
+                <p class="pillar-details">Bibliotecas en 7 CESFAM, libros de regalo y puntos de donación abiertos a la comunidad.</p>
+                <div class="access-impact" aria-label="Impacto del programa de acceso">
+                  <div><strong>25 mil+</strong><span>donados</span></div>
+                  <div><strong>16 mil</strong><span>circulando</span></div>
+                  <div><strong>7</strong><span>CESFAM</span></div>
+                  <p>Con el respaldo del Ministerio de las Culturas, las Artes y el Patrimonio.</p>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <!-- 02 MEDIACIÓN -->
+          <button type="button" onclick="openDetail('mediacion')" class="pillar-card pillar-mediacion text-left cursor-pointer group">
+            <!-- Imagen de fondo temática (hilando memorias / cuentacuentos / textil comunitario) -->
+            <div class="pillar-bg-img" style="background-image: url('https://images.unsplash.com/photo-1785829413650-ba241aae5f92?auto=format&fit=crop&w=1200&q=80');"></div>
+            <!-- Capa de color y contraste -->
+            <div class="pillar-overlay"></div>
+
+            <div class="pillar-content">
+              <div class="flex items-start justify-between">
+                <span class="text-xs font-bold tracking-[.2em]">02</span>
+                <span class="round-arrow transition-transform group-hover:scale-105">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+                </span>
+              </div>
+              <div>
+                <p class="mb-3 text-xs font-bold uppercase tracking-[.2em]">Historias que nos reúnen.</p>
+                <h3>mediación</h3>
+                <p class="pillar-details">Cuentacuentos, mandiles narrativos hechos a mano e Hilando Memorias: textil y relato comunitario.</p>
+              </div>
+            </div>
+          </button>
+
+          <!-- 03 FORMACIÓN -->
+          <button type="button" onclick="openDetail('formacion')" class="pillar-card pillar-formacion text-left cursor-pointer group">
+            <!-- Imagen de fondo temática (talleres / mediadoras / formación colectiva) -->
+            <div class="pillar-bg-img" style="background-image: url('https://images.unsplash.com/photo-1698795635824-241edc32eccd?auto=format&fit=crop&w=1200&q=80');"></div>
+            <!-- Capa de color y contraste -->
+            <div class="pillar-overlay"></div>
+
+            <div class="pillar-content">
+              <div class="flex items-start justify-between">
+                <span class="text-xs font-bold tracking-[.2em]">03</span>
+                <span class="round-arrow transition-transform group-hover:scale-105">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+                </span>
+              </div>
+              <div>
+                <p class="mb-3 text-xs font-bold uppercase tracking-[.2em]">Conocimiento que circula.</p>
+                <h3>formación</h3>
+                <p class="pillar-details">Foro LIJ de O’Higgins, coloquios, charlas y formación para educadoras rurales y equipos de salud.</p>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 / EL EQUIPO -->
+    <section id="equipo" class="px-5 py-24 md:px-10 md:py-36">
+      <div class="mx-auto max-w-[1280px]">
+        <div class="mb-14 grid gap-6 md:grid-cols-2">
+          <p class="section-label">03 / El equipo</p>
+          <h2 class="font-display text-5xl md:text-7xl">Quienes sostienen esta historia</h2>
+        </div>
+        <div class="team-grid">
+          <!-- Isabel -->
+          <article class="team-card">
+            <div class="photo-frame"><img src="img/Isabel.JPG" alt="Isabel Contreras Barrios, Dirección y mediación" /></div>
+            <div class="mt-5 flex items-baseline justify-between border-b border-black/30 pb-4">
+              <h3 class="font-display text-4xl">Isabel Contreras Barrios</h3>
+              <p class="text-xs font-bold uppercase tracking-[.15em]">Dirección y mediación</p>
+            </div>
+          </article>
+          <!-- Lily -->
+          <article class="team-card">
+            <div class="photo-frame"><img src="img/Lily.JPG" alt="Lily Vergara Osorio, Gestión comunitaria" /></div>
+            <div class="mt-5 flex items-baseline justify-between border-b border-black/30 pb-4">
+              <h3 class="font-display text-4xl">Lily Vergara Osorio</h3>
+              <p class="text-xs font-bold uppercase tracking-[.15em]">Gestión comunitaria</p>
+            </div>
+          </article>
+          <!-- Belén -->
+          <article class="team-card">
+            <div class="photo-frame"><img src="img/Bel_n.JPG" alt="Belén Larenas Soto, Educación y territorio" /></div>
+            <div class="mt-5 flex items-baseline justify-between border-b border-black/30 pb-4">
+              <h3 class="font-display text-4xl">Belén Larenas Soto</h3>
+              <p class="text-xs font-bold uppercase tracking-[.15em]">Educación y territorio</p>
+            </div>
+          </article>
+        </div>
+        <p class="photo-credit mt-7">Retratos del equipo de Fundación Cultural Parada Literaria</p>
+      </div>
+    </section>
+
+    <!-- 04 / PARTICIPA (DONACIÓN Y CONTACTO) -->
+    <section id="contacto" class="contact-section bg-[#e6b928] px-5 py-24 md:px-10 md:py-32">
+      <div class="mx-auto max-w-[1280px]">
+        <p class="section-label">04 / Participa</p>
+        <div class="mt-8 grid gap-14 md:grid-cols-2">
+          <div>
+            <h2 class="font-display text-6xl leading-[.9] md:text-8xl">Haz circular<br />una historia.</h2>
+            <p class="mt-8 max-w-lg text-xl leading-relaxed">Dona libros en buen estado. Nosotros hacemos que lleguen a nuevas manos en la Región de O’Higgins.</p>
+          </div>
+          <div class="contact-links">
+            <a href="https://wa.me/56900000000" target="_blank" rel="noreferrer">
+              <span>WhatsApp</span><small>Coordina tu entrega</small>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+            </a>
+            <a href="mailto:contacto@paradaliteraria.cl">
+              <span>Correo</span><small>contacto@paradaliteraria.cl</small>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer">
+              <span>Instagram</span><small>@fundacionparadaliteraria</small>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER FIGMA -->
+  <footer class="bg-[#202820] px-5 py-10 text-[#fff8e9] md:px-10">
+    <div class="mx-auto flex max-w-[1280px] flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="font-display text-3xl">Fundación Cultural Parada Literaria</p>
+        <p class="mt-2 text-xs uppercase tracking-[.18em] text-white/55">Rancagua · Región de O’Higgins · Chile</p>
+      </div>
+      <p class="text-xs text-white/45">© 2025 · Leer también es cuidar</p>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       VISTAS DE DETALLE (PÁGINAS INTERACTIVAS DE CADA PILAR)
+       ====================================================================== -->
+  <!-- MODAL ACCESO -->
+  <div id="detail-acceso" class="detail-overlay">
+    <div class="min-h-screen bg-[#f4ecd9] text-[#202820]">
+      <section class="detail-hero" style="background-color: #e6b928; color: #202820;">
+        <div class="detail-hero-inner">
+          <button type="button" class="back-btn" onclick="closeDetail()">← Volver a nuestro trabajo</button>
+          <div class="detail-title-row">
+            <span>01 / Pilar</span>
+            <h1>Acceso</h1>
+          </div>
+          <div class="detail-intro">
+            <p class="eyebrow">Libros donde la vida sucede.</p>
+            <p>Acercamos la lectura a los espacios cotidianos para que encontrar un libro no sea un privilegio, sino una posibilidad real.</p>
+          </div>
+        </div>
+      </section>
+      <section class="detail-body">
+        <div class="detail-photo">
+          <img src="https://images.unsplash.com/photo-1698795635774-b077032941f0?auto=format&fit=crop&w=1600&q=85" alt="Comunidad reunida alrededor de una mesa con libros">
+          <span>Parada Literaria · Territorio y comunidad</span>
+        </div>
+        <div class="detail-programs">
+          <p class="section-label">Lo que hacemos</p>
+          <article><span>01</span><div><h2>Bibliotecas en CESFAM</h2><p>Módulos de libre acceso en siete centros de salud de la región.</p></div></article>
+          <article><span>02</span><div><h2>Libros de regalo</h2><p>Ejemplares que encuentran nuevos hogares y acompañan nuevas historias.</p></div></article>
+          <article><span>03</span><div><h2>Puntos de donación</h2><p>Una red ciudadana para recibir, cuidar y volver a poner libros en circulación.</p></div></article>
+        </div>
+      </section>
+      <section class="detail-stats">
+        <p class="section-label">Libros que ya están circulando</p>
+        <div>
+          <article><strong>25 mil+</strong><span>libros donados</span></article>
+          <article><strong>16 mil</strong><span>en circulación</span></article>
+          <article><strong>7</strong><span>CESFAM con bibliotecas</span></article>
+        </div>
+        <p>Con el respaldo del Ministerio de las Culturas, las Artes y el Patrimonio.</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- MODAL MEDIACIÓN -->
+  <div id="detail-mediacion" class="detail-overlay">
+    <div class="min-h-screen bg-[#f4ecd9] text-[#202820]">
+      <section class="detail-hero" style="background-color: #bc5437; color: #fff8e9;">
+        <div class="detail-hero-inner">
+          <button type="button" class="back-btn" onclick="closeDetail()">← Volver a nuestro trabajo</button>
+          <div class="detail-title-row">
+            <span>02 / Pilar</span>
+            <h1>Mediación</h1>
+          </div>
+          <div class="detail-intro">
+            <p class="eyebrow">Historias que nos reúnen.</p>
+            <p>Creamos experiencias sensibles que conectan los libros con la memoria, el juego y los saberes de cada comunidad.</p>
+          </div>
+        </div>
+      </section>
+      <section class="detail-body">
+        <div class="detail-photo">
+          <img src="https://images.unsplash.com/photo-1785829413650-ba241aae5f92?auto=format&fit=crop&w=1600&q=85" alt="Personas trabajando juntas sobre una pieza textil">
+          <span>Parada Literaria · Territorio y comunidad</span>
+        </div>
+        <div class="detail-programs">
+          <p class="section-label">Lo que hacemos</p>
+          <article><span>01</span><div><h2>Cuentacuentos</h2><p>Relatos compartidos para escuchar, imaginar y conversar en comunidad.</p></div></article>
+          <article><span>02</span><div><h2>Mandiles narrativos</h2><p>Piezas hechas a mano que convierten cada historia en una experiencia visual y táctil.</p></div></article>
+          <article><span>03</span><div><h2>Hilando Memorias</h2><p>Proyecto textil comunitario donde las manos también escriben patrimonio.</p></div></article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- MODAL FORMACIÓN -->
+  <div id="detail-formacion" class="detail-overlay">
+    <div class="min-h-screen bg-[#f4ecd9] text-[#202820]">
+      <section class="detail-hero" style="background-color: #24382f; color: #fff8e9;">
+        <div class="detail-hero-inner">
+          <button type="button" class="back-btn" onclick="closeDetail()">← Volver a nuestro trabajo</button>
+          <div class="detail-title-row">
+            <span>03 / Pilar</span>
+            <h1>Formación</h1>
+          </div>
+          <div class="detail-intro">
+            <p class="eyebrow">Conocimiento que circula.</p>
+            <p>Compartimos herramientas para que más personas puedan acompañar lecturas con sentido, cuidado y pertinencia territorial.</p>
+          </div>
+        </div>
+      </section>
+      <section class="detail-body">
+        <div class="detail-photo">
+          <img src="https://images.unsplash.com/photo-1698795635824-241edc32eccd?auto=format&fit=crop&w=1600&q=85" alt="Grupo de personas participando en una actividad formativa">
+          <span>Parada Literaria · Territorio y comunidad</span>
+        </div>
+        <div class="detail-programs">
+          <p class="section-label">Lo que hacemos</p>
+          <article><span>01</span><div><h2>Foro LIJ de O’Higgins</h2><p>Un espacio regional para pensar la literatura infantil y juvenil.</p></div></article>
+          <article><span>02</span><div><h2>Coloquios y charlas</h2><p>Encuentros con autoras, especialistas y voces vinculadas a la lectura.</p></div></article>
+          <article><span>03</span><div><h2>Capacitaciones</h2><p>Formación práctica para educadoras rurales y equipos de salud.</p></div></article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // Menú móvil
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+      });
+    }
+
+    // Funciones para abrir detalles de pilares
+    function openDetail(id) {
+      const el = document.getElementById('detail-' + id);
+      if (el) {
+        el.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeDetail() {
+      document.querySelectorAll('.detail-overlay').forEach(el => {
+        el.classList.remove('active');
+      });
+      document.body.style.overflow = '';
+    }
+
+    // Escuchar tecla escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDetail();
+    });
+
+    // Control de la Animación de Palabras en el Hero (como en la demo)
+    const words = [
+      { text: "Lectura", subtitle: "El derecho cotidiano al asombro" },
+      { text: "Infancia", subtitle: "Primeras palabras, primeros mundos" },
+      { text: "Comunidad", subtitle: "Encuentro en los barrios de Rancagua" },
+      { text: "Patrimonio", subtitle: "Memoria viva y creación regional" },
+      { text: "Mediación", subtitle: "Puentes entre el libro y las personas" }
+    ];
+
+    const heroIntroSeq = document.getElementById('heroIntroSeq');
+    const heroFinalSeal = document.getElementById('heroFinalSeal');
+    const wordCard = document.getElementById('wordCard');
+    const btnSkipHero = document.getElementById('btnSkipHero');
+    const btnReplayHero = document.getElementById('btnReplayHero');
+    const seqDots = document.querySelectorAll('#seqDots .seq-dot');
+
+    let heroTimer = null;
+
+    function updateHeroDots(idx) {
+      seqDots.forEach((dot, i) => {
+        if (i === idx) {
+          dot.className = 'seq-dot h-2.5 w-2.5 rounded-full bg-[#bc5437] transition-all duration-300';
+        } else {
+          dot.className = 'seq-dot h-2 w-2 rounded-full bg-[#202820]/25 transition-all duration-300';
+        }
+      });
+    }
+
+    function showHeroWord(idx) {
+      if (idx >= words.length) {
+        revealFinalSeal();
+        return;
+      }
+
+      updateHeroDots(idx);
+      const item = words[idx];
+
+      wordCard.style.opacity = '0';
+      wordCard.style.transform = 'translateY(8px) scale(0.96)';
+
+      setTimeout(() => {
+        wordCard.innerHTML = `
+          <h2 class="font-editorial text-5xl md:text-7xl font-bold text-[#202820] tracking-wide mb-3">
+            <span class="highlight-brush">${item.text}</span>
+          </h2>
+          <p class="text-sm md:text-base font-normal italic text-[#202820]/75 tracking-normal">${item.subtitle}</p>
+        `;
+        wordCard.style.opacity = '1';
+        wordCard.style.transform = 'translateY(0) scale(1)';
+
+        heroTimer = setTimeout(() => {
+          showHeroWord(idx + 1);
+        }, 1100);
+      }, 250);
+    }
+
+    function revealFinalSeal() {
+      clearTimeout(heroTimer);
+      heroIntroSeq.style.opacity = '0';
+      heroIntroSeq.style.transform = 'scale(0.95)';
+      
+      setTimeout(() => {
+        heroIntroSeq.classList.add('hidden');
+        heroFinalSeal.classList.remove('hidden');
+        heroFinalSeal.classList.add('flex');
+        
+        requestAnimationFrame(() => {
+          heroFinalSeal.style.opacity = '1';
+          heroFinalSeal.style.transform = 'scale(1)';
+        });
+      }, 400);
+    }
+
+    function runHeroIntro() {
+      clearTimeout(heroTimer);
+      heroFinalSeal.classList.add('hidden');
+      heroFinalSeal.classList.remove('flex');
+      heroFinalSeal.style.opacity = '0';
+      heroFinalSeal.style.transform = 'scale(0.95)';
+
+      heroIntroSeq.classList.remove('hidden');
+      heroIntroSeq.classList.add('flex');
+      heroIntroSeq.style.opacity = '1';
+      heroIntroSeq.style.transform = 'scale(1)';
+
+      showHeroWord(0);
+    }
+
+    if (btnSkipHero) {
+      btnSkipHero.addEventListener('click', revealFinalSeal);
+    }
+    if (btnReplayHero) {
+      btnReplayHero.addEventListener('click', runHeroIntro);
+    }
+
+    // Arrancar la animación en el hero automáticamente
+    runHeroIntro();
+  </script>
+</body>
+</html>
