@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light">
+  <meta name="theme-color" content="#f4ecd9">
   <title>Fundación Cultural Parada Literaria · Rancagua</title>
   <link rel="icon" type="image/png" href="img/Logo_Fundaci_n_Cultural_Parada_Literaria.png">
   
@@ -15,35 +18,58 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class', // Desactiva dark mode automático por media query
       theme: {
         extend: {
           fontFamily: {
             display: ['"Libre Caslon Display"', 'serif'],
             editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
             sans: ['"DM Sans"', 'sans-serif'],
-          }
+          },
         }
       }
     }
   </script>
 
   <style>
-    /* Estilos de diseño e identidad visual */
+    /* Forzar paleta editorial cálida incluso en navegadores con Modo Oscuro forzado */
     :root {
+      color-scheme: light only !important;
       font-family: 'DM Sans', sans-serif;
-      background: #f4ecd9;
-      color: #202820;
+      background-color: #f4ecd9 !important;
+      color: #202820 !important;
       font-synthesis: none;
     }
 
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: #f4ecd9; color: #202820; }
+    html { 
+      scroll-behavior: smooth; 
+      color-scheme: light only !important;
+      background-color: #f4ecd9 !important;
+    }
+    body { 
+      margin: 0; 
+      background-color: #f4ecd9 !important; 
+      color: #202820 !important; 
+    }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
     .font-display { font-family: 'Libre Caslon Display', serif; }
 
-    .mini-mark { width: 54px; height: 54px; overflow: hidden; }
-    .mini-mark img { width: 76px; max-width: none; transform: translate(-11px,-11px); }
+    .mini-mark { 
+      width: 44px; 
+      height: 44px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      flex-shrink: 0;
+    }
+    .mini-mark img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: contain; 
+      transform: none; 
+      display: block;
+    }
     nav a { transition: opacity .2s; }
     nav a:hover { opacity: .55; }
     .nav-contact { border-bottom: 2px solid #bc5437; padding-bottom: 5px; }
